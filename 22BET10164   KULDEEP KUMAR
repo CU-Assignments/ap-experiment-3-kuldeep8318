@@ -1,0 +1,293 @@
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        // Create a dummy node to act as the starting point of the merged list
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy; // This will be used to build the merged list
+
+        // Traverse through both lists and merge them
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                current.next = list1; // Attach list1 node to the merged list
+                list1 = list1.next; // Move to the next node in list1
+            } else {
+                current.next = list2; // Attach list2 node to the merged list
+                list2 = list2.next; // Move to the next node in list2
+            }
+            current = current.next; // Move current pointer to the newly added node
+        }
+
+        // If there are any remaining nodes in list1, append them
+        if (list1 != null) {
+            current.next = list1;
+        }
+
+        // If there are any remaining nodes in list2, append them
+        if (list2 != null) {
+            current.next = list2;
+        }
+
+        return dummy.next; // The first node of the merged list is after the dummy node
+    }
+}
+
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        // Create a dummy node to handle edge cases, like when the first node has duplicates
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy; // This will track the node before the current node
+        ListNode current = head; // This will traverse the list
+
+        // Traverse the list
+        while (current != null) {
+            // Check if the current node has a duplicate (current.next != null and current.val == current.next.val)
+            if (current.next != null && current.val == current.next.val) {
+                // Skip all nodes with the same value as current
+                while (current.next != null && current.val == current.next.val) {
+                    current = current.next;
+                }
+                // After skipping duplicates, link prev to the next distinct node
+                prev.next = current.next;
+            } else {
+                // No duplicate found, so move prev to current
+                prev = prev.next;
+            }
+            // Move current to the next node
+            current = current.next;
+        }
+
+        // Return the modified list starting from dummy.next
+        return dummy.next;
+    }
+}
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        
+        ListNode slow = head;  // Slow pointer (tortoise)
+        ListNode fast = head;  // Fast pointer (hare)
+        
+        while (fast != null && fast.next != null) {
+            slow = slow.next;           // Move slow pointer by 1 step
+            fast = fast.next.next;      // Move fast pointer by 2 steps
+            
+            // If the slow and fast pointers meet, there is a cycle
+            if (slow == fast) {
+                return true;
+            }
+        }
+        
+        // If fast pointer reaches the end, there is no cycle
+        return false;
+    }
+}
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        // If the list is empty or has only one node, return the head as is
+        if (head == null || head.next == null || k == 0) {
+            return head;
+        }
+
+        // Step 1: Get the length of the list
+        ListNode current = head;
+        int length = 1; // We already count the head node
+        while (current.next != null) {
+            length++;
+            current = current.next;
+        }
+
+        // Step 2: Make the list circular by connecting the tail to the head
+        current.next = head;
+
+        // Step 3: Find the new tail (length - k % length - 1) and new head (length - k % length)
+        k = k % length; // If k is larger than the length of the list, reduce k
+        if (k == 0) {
+            current.next = null; // No need to rotate if k is a multiple of length
+            return head;
+        }
+
+        // Move to the new tail
+        ListNode newTail = head;
+        for (int i = 1; i < length - k; i++) {
+            newTail = newTail.next;
+        }
+
+        // The new head is the node after the new tail
+        ListNode newHead = newTail.next;
+        
+        // Break the circle
+        newTail.next = null;
+
+        return newHead;
+    }
+}
+import java.util.PriorityQueue;
+
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        // Create a priority queue (min-heap)
+        PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
+
+        // Insert the head of each list into the min-heap
+        for (ListNode list : lists) {
+            if (list != null) {
+                pq.offer(list);
+            }
+        }
+
+        // Create a dummy node to simplify the code for merging the lists
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        // Process the min-heap until it's empty
+        while (!pq.isEmpty()) {
+            // Extract the smallest element from the heap
+            ListNode node = pq.poll();
+
+            // Add it to the merged list
+            current.next = node;
+            current = current.next;
+
+            // If the extracted node has a next node, push it to the heap
+            if (node.next != null) {
+                pq.offer(node.next);
+            }
+        }
+
+        // Return the merged list starting from the node after the dummy
+        return dummy.next;
+    }
+}
+
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
+public class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        // Step 1: Split the list into two halves
+        ListNode middle = getMiddle(head);
+        ListNode nextToMiddle = middle.next;
+        middle.next = null;
+        
+        // Step 2: Recursively sort both halves
+        ListNode left = sortList(head);
+        ListNode right = sortList(nextToMiddle);
+        
+        // Step 3: Merge the sorted halves
+        return merge(left, right);
+    }
+    
+    // Helper function to find the middle of the linked list
+    private ListNode getMiddle(ListNode head) {
+        if (head == null) return head;
+        
+        ListNode slow = head;
+        ListNode fast = head;
+        
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        return slow;
+    }
+    
+    // Helper function to merge two sorted lists
+    private ListNode merge(ListNode left, ListNode right) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        
+        while (left != null && right != null) {
+            if (left.val <= right.val) {
+                current.next = left;
+                left = left.next;
+            } else {
+                current.next = right;
+                right = right.next;
+            }
+            current = current.next;
+        }
+        
+        // Append the remaining nodes of either left or right
+        if (left != null) {
+            current.next = left;
+        }
+        if (right != null) {
+            current.next = right;
+        }
+        
+        return dummy.next;
+    }
+}
+
+import java.util.PriorityQueue;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
+public class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        // Create a priority queue (min-heap) to store the nodes
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>((a, b) -> a.val - b.val);
+        
+        // Add the head of each list to the min-heap
+        for (ListNode list : lists) {
+            if (list != null) {
+                minHeap.offer(list);
+            }
+        }
+        
+        // Create a dummy node to simplify the merge process
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        
+        // While the heap is not empty, extract the smallest element and add it to the result list
+        while (!minHeap.isEmpty()) {
+       
