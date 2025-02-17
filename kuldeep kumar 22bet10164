@@ -1,0 +1,138 @@
+// Define the Node class for the linked list
+class Node {
+    int data;
+    Node next;
+
+    // Constructor to create a new node
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Define the LinkedList class
+class LinkedList {
+    Node head;
+
+    // Method to add elements to the linked list
+    public void add(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+        }
+    }
+
+    // Method to print all the elements of the linked list
+    public void printList() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        LinkedList list = new LinkedList();
+
+        // Add elements to the linked list
+        list.add(49);
+        list.add(10);
+        list.add(30);
+
+        // Print all elements separated by space
+        list.printList();
+    }
+}
+
+
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        // If the list is empty or has only one element, no duplicates can exist
+        if (head == null) {
+            return head;
+        }
+
+        ListNode current = head;
+        
+        // Traverse the linked list
+        while (current != null && current.next != null) {
+            // If the current node's value is the same as the next node's value, skip the next node
+            if (current.val == current.next.val) {
+                current.next = current.next.next;
+            } else {
+                current = current.next; // Move to the next node
+            }
+        }
+
+        return head; // Return the modified list
+    }
+}
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null; // To store the previous node
+        ListNode curr = head; // To store the current node
+        
+        // Traverse the linked list and reverse the pointers
+        while (curr != null) {
+            ListNode nextTemp = curr.next; // Save the next node
+            curr.next = prev; // Reverse the current node's pointer
+            prev = curr; // Move prev to the current node
+            curr = nextTemp; // Move curr to the next node
+        }
+        
+        return prev; // prev will be the new head after the loop
+    }
+}
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+public class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        // Edge case: if the list is empty or contains only one node, return null
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        ListNode slow = head;   // Slow pointer will point to the middle node
+        ListNode fast = head;   // Fast pointer will move two steps at a time
+        ListNode prev = null;   // To keep track of the node before slow
+        
+        // Traverse the list with slow and fast pointers
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;  // Fast pointer moves two steps
+            prev = slow;            // Move prev to slow
+            slow = slow.next;       // Slow pointer moves one step
+        }
+
+        // At the end of the loop, slow is at the middle node, and prev is the node before it
+        // Remove the middle node by linking prev to the next of slow
+        if (prev != null) {
+            prev.next = slow.next;
+        }
+
+        return head; // Return the modified list
+    }
+}
